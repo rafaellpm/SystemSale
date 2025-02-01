@@ -40,7 +40,6 @@
 
 # Delphi compiler-generated binaries (safe to delete)
 *.exe
-*.dll
 *.bpl
 *.bpi
 *.dcp
@@ -72,6 +71,8 @@
 # Delphi history and backups
 __history/
 __recovery/
+exe/
+dcu/
 *.~*
 
 # Castalia statistics file (since XE7 Castalia is distributed with Delphi)
@@ -79,3 +80,5 @@ __recovery/
 
 # Boss dependency manager vendor folder https://github.com/HashLoad/boss
 modules/
+system.ini
+SystemSale.res

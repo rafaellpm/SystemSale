@@ -5,18 +5,18 @@ interface
 type TSaleModel = class
   private
     FId         : Integer;
-    FValorTotal : Float64;
+    FVlrTotal : Float64;
     FIdCliente  : Integer;
     FData       : TDateTime;
     procedure SetData(const Value: TDateTime);
     procedure SetId(const Value: Integer);
     procedure SetIdCliente(const Value: Integer);
-    procedure SetValorTotal(const Value: Float64);
+    procedure SetVlrTotal(const Value: Float64);
   public
     property Id         : Integer   read FId         write SetId;
     property IdCliente  : Integer   read FIdCliente  write SetIdCliente;
     property Data       : TDateTime read FData       write SetData;
-    property ValorTotal : Float64   read FValorTotal write SetValorTotal;
+    property VlrTotal   : Float64   read FVlrTotal   write SetVlrTotal;
 end;
 
 implementation
@@ -38,9 +38,9 @@ begin
   FIdCliente := Value;
 end;
 
-procedure TSaleModel.SetValorTotal(const Value: Float64);
+procedure TSaleModel.SetVlrTotal(const Value: Float64);
 begin
-  FValorTotal := Value;
+  FVlrTotal := Value;
 end;
 
 end.

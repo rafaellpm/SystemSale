@@ -16,7 +16,7 @@ type TClientModel = class
     property Id     : Integer read FId     write SetId;
     property Nome   : string  read FNome   write SetNome;
     property Cidade : string  read FCidade write SetCidade;
-    property Uf     : string  read FUf     write SetUf;
+    property UF     : string  read FUf     write SetUf;
 end;
 
 implementation
