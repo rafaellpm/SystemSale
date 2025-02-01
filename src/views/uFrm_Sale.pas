@@ -326,6 +326,7 @@ begin
   edtDescProduct.Text     := '';
   edtCodProduct.Text      := '';
   edtCodProduct.Enabled   := True;
+  edtCodProduct.Tag       := 0;
   edtVlrUnitProduc.Text   := '0,00';
   edtVlrTotalProduct.Text := '0,00';
   edtQtdeProduct.Text     := '1,00';
@@ -348,7 +349,7 @@ procedure TfrmSale.pEditProduct;
 begin
   if memProducts.Active then
   begin
-    edtCodProduct.Tag       := memProductsIndex.AsInteger;
+    edtCodProduct.Tag       := memProductsIndex.AsInteger+1;
     edtCodProduct.Text      := IntToStr(memProductsIdProduto.AsInteger);
     edtCodProduct.Enabled   := False;
     edtDescProduct.Text     := memProductsDescricaoProduto.AsString;
@@ -381,18 +382,17 @@ begin
     end
     else
     begin
-      index := edtCodProduct.Tag;
+      index := edtCodProduct.Tag -1;
       memProducts.Edit;
     end;
 
-    memProductsQtde.AsFloat              := StrToCurr(edtQtdeProduct.Text);
-    memProductsVlrUnitario.AsFloat       := StrToCurr(edtVlrUnitProduc.Text);
-    memProductsVlrTotal.AsFloat          := StrToCurr(edtVlrTotalProduct.Text);
+    memProductsQtde.AsFloat        := StrToCurr(edtQtdeProduct.Text);
+    memProductsVlrUnitario.AsFloat := StrToCurr(edtVlrUnitProduc.Text);
+    memProductsVlrTotal.AsFloat    := StrToCurr(edtVlrTotalProduct.Text);
 
-
-    sale.Items[index].Qtde             := memProductsQtde.AsFloat;
-    sale.Items[index].VlrUnitario      := memProductsVlrUnitario.AsFloat;
-    sale.Items[index].VlrTotal         := memProductsVlrTotal.AsFloat;
+    sale.Items[index].Qtde        := memProductsQtde.AsFloat;
+    sale.Items[index].VlrUnitario := memProductsVlrUnitario.AsFloat;
+    sale.Items[index].VlrTotal    := memProductsVlrTotal.AsFloat;
 
     pUpdateTotalSale;
 
@@ -402,6 +402,8 @@ begin
 
     edtCodProduct.Enabled := true;
     edtCodProduct.Tag     := 0;
+
+    //pClearProdSelected;
 
   except
     on e: exception do
