@@ -4,9 +4,9 @@ object frmSale: TfrmSale
   BorderIcons = []
   BorderStyle = bsDialog
   Caption = 'Venda Balc'#227'o'
-  ClientHeight = 650
+  ClientHeight = 635
   ClientWidth = 843
-  Color = clSkyBlue
+  Color = 16250356
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
@@ -19,15 +19,15 @@ object frmSale: TfrmSale
   OnShow = FormShow
   DesignSize = (
     843
-    650)
+    635)
   TextHeight = 15
   object GroupBox3: TGroupBox
     Left = 8
-    Top = 194
+    Top = 186
     Width = 827
     Height = 438
     Anchors = [akTop]
-    Color = 15647129
+    Color = 15197152
     ParentBackground = False
     ParentColor = False
     TabOrder = 0
@@ -204,6 +204,8 @@ object frmSale: TfrmSale
       TitleFont.Height = -12
       TitleFont.Name = 'Segoe UI'
       TitleFont.Style = []
+      OnDblClick = DBGrid1DblClick
+      OnKeyDown = DBGrid1KeyDown
       Columns = <
         item
           Expanded = False
@@ -245,13 +247,12 @@ object frmSale: TfrmSale
           Visible = True
         end>
     end
-    object Panel1: TPanel
+    object pnlCodProduct: TPanel
       Left = 8
       Top = 10
       Width = 108
       Height = 41
       BevelOuter = bvNone
-      Caption = 'Panel1'
       Color = clWhite
       ParentBackground = False
       TabOrder = 0
@@ -375,7 +376,7 @@ object frmSale: TfrmSale
         BevelOuter = bvNone
         BorderStyle = bsNone
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = 5722185
         Font.Height = -13
         Font.Name = 'Segoe UI'
         Font.Style = []
@@ -385,7 +386,7 @@ object frmSale: TfrmSale
         OnKeyDown = edtCodProductKeyDown
       end
     end
-    object Panel2: TPanel
+    object pnlDescProduct: TPanel
       Left = 124
       Top = 10
       Width = 405
@@ -428,7 +429,7 @@ object frmSale: TfrmSale
         Color = clWhite
         Enabled = False
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = 5722185
         Font.Height = -13
         Font.Name = 'Segoe UI'
         Font.Style = []
@@ -436,7 +437,7 @@ object frmSale: TfrmSale
         TabOrder = 0
       end
     end
-    object Panel7: TPanel
+    object pnlQtdeProduct: TPanel
       Left = 536
       Top = 10
       Width = 68
@@ -475,20 +476,18 @@ object frmSale: TfrmSale
         Height = 23
         BorderStyle = bsNone
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = 5722185
         Font.Height = -13
         Font.Name = 'Segoe UI'
         Font.Style = []
-        NumbersOnly = True
         ParentFont = False
         TabOrder = 0
         Text = '1,00'
         OnExit = edtQtdeProductExit
-        OnKeyDown = edtQtdeProductKeyDown
       end
     end
-    object Panel8: TPanel
-      Left = 620
+    object pnlVlrUnitProduct: TPanel
+      Left = 621
       Top = 10
       Width = 68
       Height = 41
@@ -526,22 +525,25 @@ object frmSale: TfrmSale
         Height = 23
         BorderStyle = bsNone
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = 5722185
         Font.Height = -13
         Font.Name = 'Segoe UI'
         Font.Style = []
         ParentFont = False
         TabOrder = 0
         Text = '0,00'
+        OnExit = edtVlrUnitProducExit
+        OnKeyDown = edtVlrUnitProducKeyDown
       end
     end
-    object Panel9: TPanel
+    object pnlVlrTotalProduct: TPanel
       Left = 703
       Top = 10
       Width = 68
       Height = 41
       BevelOuter = bvNone
       Color = clWhite
+      Enabled = False
       ParentBackground = False
       TabOrder = 5
       object Label9: TLabel
@@ -574,7 +576,7 @@ object frmSale: TfrmSale
         Height = 23
         BorderStyle = bsNone
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = 5722185
         Font.Height = -13
         Font.Name = 'Segoe UI'
         Font.Style = []
@@ -583,7 +585,7 @@ object frmSale: TfrmSale
         Text = '0,00'
       end
     end
-    object Panel11: TPanel
+    object pnlVlrTotalSale: TPanel
       Left = 709
       Top = 386
       Width = 111
@@ -612,19 +614,21 @@ object frmSale: TfrmSale
         Width = 4
         Height = 41
         Align = alLeft
-        Brush.Color = clTeal
+        Brush.Color = clGreen
         Pen.Style = psClear
         ExplicitLeft = -4
         ExplicitTop = -6
       end
-      object Label15: TLabel
-        Left = 72
+      object lblTotalSale: TLabel
+        Left = 10
         Top = 13
-        Width = 31
+        Width = 93
         Height = 23
+        Alignment = taRightJustify
+        AutoSize = False
         Caption = '0,00'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = 5722185
         Font.Height = -17
         Font.Name = 'Segoe UI'
         Font.Style = []
@@ -637,14 +641,14 @@ object frmSale: TfrmSale
     Top = 66
     Width = 827
     Height = 114
-    Color = 15647129
+    Color = 15197152
     ParentBackground = False
     ParentColor = False
     TabOrder = 1
-    object Panel4: TPanel
+    object pnlCodSale: TPanel
       Left = 8
       Top = 9
-      Width = 176
+      Width = 154
       Height = 41
       BevelOuter = bvNone
       Color = clWhite
@@ -653,9 +657,9 @@ object frmSale: TfrmSale
       object Label4: TLabel
         Left = 6
         Top = 0
-        Width = 99
+        Width = 59
         Height = 13
-        Caption = 'Importar Venda (ID)'
+        Caption = 'C'#243'd. Venda'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -663,7 +667,7 @@ object frmSale: TfrmSale
         Font.Style = []
         ParentFont = False
       end
-      object btnImportSale: TSpeedButton
+      object btnSearchSale: TSpeedButton
         Left = 124
         Top = 15
         Width = 23
@@ -745,90 +749,7 @@ object frmSale: TfrmSale
           0000000000000000000000000000000000000000000000000000000000000000
           0000000000000000000000000000000000000000000000000000000000000000
           000000000000}
-      end
-      object SpeedButton4: TSpeedButton
-        Left = 149
-        Top = 15
-        Width = 23
-        Height = 23
-        Flat = True
-        Glyph.Data = {
-          42090000424D4209000000000000420000002800000018000000180000000100
-          20000300000000090000130B0000130B000000000000000000000000FF0000FF
-          0000FF0000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          00000000000000000000000000000000000000000000000000000000006E0000
-          00E5000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
-          00FF000000FF000000FF000000E50000006C0000000000000000000000000000
-          000000000000000000000000000000000000000000000000003D000000DB0000
-          0025000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000025000000DC0000003B00000000000000000000
-          0000000000000000000000000000000000000000000000000079000000860000
-          0000000000000000000000000000000000000000003600000031000000000000
-          0000000000000000000000000000000000860000007900000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          000000000000000000000000000000000040000000EF000000EF000000390000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          000000000000000000000000003C000000E9000000A1000000A4000000E90000
-          0038000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000003B000000E9000000420000008000000080000000470000
-          00E8000000380000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000007700000040000000000000008000000080000000000000
-          0048000000730000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000008000000080000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000008000000080000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000008000000080000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000008000000080000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000008000000080000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000008000000080000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          000000000000}
-        OnClick = SpeedButton4Click
+        OnClick = btnSearchSaleClick
       end
       object Shape1: TShape
         Left = 0
@@ -839,24 +760,26 @@ object frmSale: TfrmSale
         Brush.Color = 10905621
         Pen.Style = psClear
       end
-      object edtImportSale: TEdit
+      object edtCodSale: TEdit
         Left = 6
         Top = 15
         Width = 112
         Height = 23
         TabStop = False
         BorderStyle = bsNone
+        Color = clWhite
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = 5722185
         Font.Height = -13
         Font.Name = 'Segoe UI'
         Font.Style = []
         NumbersOnly = True
         ParentFont = False
         TabOrder = 0
+        OnKeyDown = edtCodSaleKeyDown
       end
     end
-    object Panel5: TPanel
+    object pnlNameClient: TPanel
       Left = 124
       Top = 62
       Width = 458
@@ -899,7 +822,7 @@ object frmSale: TfrmSale
         Color = clWhite
         Enabled = False
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = 5722185
         Font.Height = -13
         Font.Name = 'Segoe UI'
         Font.Style = []
@@ -907,7 +830,7 @@ object frmSale: TfrmSale
         TabOrder = 0
       end
     end
-    object Panel6: TPanel
+    object pnlCondPayment: TPanel
       Left = 672
       Top = 62
       Width = 148
@@ -947,10 +870,11 @@ object frmSale: TfrmSale
         Left = 9
         Top = 14
         Width = 132
-        Height = 25
+        Height = 22
+        Style = csOwnerDrawFixed
         Anchors = [akTop, akRight]
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = 5722185
         Font.Height = -13
         Font.Name = 'Segoe UI'
         Font.Style = []
@@ -963,7 +887,7 @@ object frmSale: TfrmSale
           'A Prazo')
       end
     end
-    object Panel3: TPanel
+    object pnlCodClient: TPanel
       Left = 8
       Top = 62
       Width = 108
@@ -1080,13 +1004,13 @@ object frmSale: TfrmSale
         ExplicitLeft = 8
       end
       object edtCodClient: TEdit
-        Left = 10
-        Top = 20
+        Left = 6
+        Top = 16
         Width = 75
         Height = 23
         BorderStyle = bsNone
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
+        Font.Color = 5722185
         Font.Height = -13
         Font.Name = 'Segoe UI'
         Font.Style = []
@@ -1096,20 +1020,20 @@ object frmSale: TfrmSale
         OnKeyDown = edtCodClientKeyDown
       end
     end
-    object Panel10: TPanel
-      Left = 720
+    object pnlDateSale: TPanel
+      Left = 691
       Top = 9
-      Width = 100
+      Width = 129
       Height = 41
       BevelOuter = bvNone
       Color = clWhite
       ParentBackground = False
       TabOrder = 4
       DesignSize = (
-        100
+        129
         41)
       object Label3: TLabel
-        Left = 30
+        Left = 59
         Top = 0
         Width = 63
         Height = 13
@@ -1121,6 +1045,7 @@ object frmSale: TfrmSale
         Font.Name = 'Segoe UI'
         Font.Style = []
         ParentFont = False
+        ExplicitLeft = 30
       end
       object Shape9: TShape
         Left = 0
@@ -1132,16 +1057,20 @@ object frmSale: TfrmSale
         Pen.Style = psClear
         ExplicitLeft = 8
       end
-      object dtDateSale: TDateTimePicker
-        Left = 7
-        Top = 16
-        Width = 86
-        Height = 23
-        Anchors = [akTop, akRight]
-        Date = 45688.000000000000000000
-        Time = 0.762059571759891700
-        Enabled = False
-        TabOrder = 0
+      object lblDateSale: TLabel
+        Left = 8
+        Top = 20
+        Width = 114
+        Height = 17
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'lblDateSale'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = 5722185
+        Font.Height = -12
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
       end
     end
   end
@@ -1152,32 +1081,48 @@ object frmSale: TfrmSale
     Height = 57
     Align = alTop
     BevelOuter = bvNone
-    Color = 13533722
+    Color = 13159893
     ParentBackground = False
     TabOrder = 2
-    ExplicitLeft = 8
-    ExplicitTop = 3
-    object SpeedButton1: TSpeedButton
+    object btnSaveSale: TSpeedButton
       Left = 8
       Top = 3
       Width = 77
       Height = 50
       Caption = 'Gravar'
+      OnClick = btnSaveSaleClick
     end
-    object SpeedButton2: TSpeedButton
-      Left = 88
-      Top = 3
-      Width = 77
-      Height = 50
-      Caption = 'Cancelar'
-    end
-    object SpeedButton3: TSpeedButton
+    object btnExit: TSpeedButton
       Left = 758
       Top = 3
       Width = 77
       Height = 50
       Caption = 'Sair'
-      OnClick = SpeedButton3Click
+      OnClick = btnExitClick
+    end
+    object btnClear: TSpeedButton
+      Left = 89
+      Top = 3
+      Width = 77
+      Height = 50
+      Caption = 'Limpar'
+      OnClick = btnClearClick
+    end
+    object btnCancelSale: TSpeedButton
+      Left = 251
+      Top = 3
+      Width = 77
+      Height = 50
+      Caption = 'Cancelar'
+      OnClick = btnCancelSaleClick
+    end
+    object btnImport: TSpeedButton
+      Left = 170
+      Top = 3
+      Width = 77
+      Height = 50
+      Caption = 'Importar'
+      OnClick = btnImportClick
     end
   end
   object memProducts: TFDMemTable
@@ -1201,21 +1146,22 @@ object frmSale: TfrmSale
     end
     object memProductsQtde: TBCDField
       FieldName = 'qtde'
+      DisplayFormat = '#,##0.##'
     end
     object memProductsVlrUnitario: TBCDField
       FieldName = 'vlr_unitario'
+      DisplayFormat = '#,##0.00'
     end
     object memProductsVlrTotal: TBCDField
       FieldName = 'vlr_total'
+      DisplayFormat = '#,##0.00'
     end
     object memProductsDescricaoProduto: TWideStringField
       FieldName = 'descricao_produto'
       Size = 255
     end
     object memProductsIndex: TIntegerField
-      FieldKind = fkCalculated
       FieldName = 'Index'
-      Calculated = True
     end
   end
   object dsProducts: TDataSource

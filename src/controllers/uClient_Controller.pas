@@ -11,9 +11,9 @@ type TClientController = class(TClientModel)
   private
     fdConn : TFDConnection;
   public
-    procedure pCadastrar();
-    procedure pCarregar();
-    procedure pAtualizar();
+    procedure pCreate();
+    procedure pLoad();
+    procedure pUpdate();
 
     function fGetAll(): TFDQuery;
 
@@ -61,7 +61,7 @@ begin
   end;
 end;
 
-procedure TClientController.pAtualizar;
+procedure TClientController.pUpdate;
 var qryExec : TFDQuery;
 begin
   try
@@ -97,7 +97,7 @@ begin
 
 end;
 
-procedure TClientController.pCadastrar;
+procedure TClientController.pCreate;
 var qryExec : TFDQuery;
 begin
   try
@@ -125,7 +125,7 @@ begin
   end;
 
   try
-    Id := fdConn.ExecSQL('SELECT LAST_INSERT_ID();');
+    Id := fdConn.ExecSQLScalar('SELECT LAST_INSERT_ID();');
 
     fdConn.Commit;
   except
@@ -142,7 +142,7 @@ begin
 
 end;
 
-procedure TClientController.pCarregar;
+procedure TClientController.pLoad;
 var qryCons : TFDQuery;
 begin
   try

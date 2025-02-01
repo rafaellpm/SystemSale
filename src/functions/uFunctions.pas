@@ -7,10 +7,13 @@ uses Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.C
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.ExtCtrls, Vcl.Grids,
-  Vcl.DBGrids;
+  Vcl.DBGrids, System.DateUtils;
 
   procedure pSaveLog(iText: string);
   function fGetCurrentDir(): string;
+
+  function fGetLastDayOfMonth: TDateTime;
+  function fGetFirstDayOfMonth: TDateTime;
 
   function pMoveForm(Sender: TObject; Button: TMouseButton): string;
   function fValueNumeric(iValue: string): Boolean;
@@ -31,12 +34,28 @@ begin
   if not DirectoryExists(dir) then
     ForceDirectories(dir);
 
-  log.LoadFromFile(dir+'\log.txt');
+  if FileExists(dir+'\log.txt') then
+    log.LoadFromFile(dir+'\log.txt');
 
   log.Add(FormatDateTime('dd-MM-yyyy hh:mm:ss', Now) + ' - ' + iText);
 
   log.SaveToFile(dir+'\log.txt');
 
+end;
+
+function fGetFirstDayOfMonth: TDateTime;
+var
+  Year, Month, Day: Word;
+begin
+  DecodeDate(Date, Year, Month, Day);
+  Result := EncodeDate(Year, Month, 1);
+end;
+function fGetLastDayOfMonth: TDateTime;
+var
+  Year, Month, Day: Word;
+begin
+  DecodeDate(Date, Year, Month, Day);
+  Result := EncodeDate(Year, Month, DaysInAMonth(Year, Month));
 end;
 
 function fGetCurrentDir(): string;

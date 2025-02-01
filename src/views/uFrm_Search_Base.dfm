@@ -14,6 +14,7 @@ object frmSearchBase: TfrmSearchBase
   KeyPreview = True
   Position = poScreenCenter
   OnKeyDown = FormKeyDown
+  OnShow = FormShow
   TextHeight = 15
   object GroupBox1: TGroupBox
     Left = 8
@@ -23,17 +24,10 @@ object frmSearchBase: TfrmSearchBase
     TabOrder = 0
     object btnSearch: TSpeedButton
       Left = 559
-      Top = 24
+      Top = 9
       Width = 78
-      Height = 22
+      Height = 41
       Caption = 'Pesquisar'
-    end
-    object Label1: TLabel
-      Left = 11
-      Top = 8
-      Width = 51
-      Height = 15
-      Caption = 'Descri'#231#227'o'
     end
     object lblTotalRegistro: TLabel
       Left = 11
@@ -48,21 +42,13 @@ object frmSearchBase: TfrmSearchBase
       Font.Style = []
       ParentFont = False
     end
-    object edtSearch: TEdit
-      Left = 11
-      Top = 24
-      Width = 544
-      Height = 23
-      TabOrder = 0
-      OnKeyDown = edtSearchKeyDown
-    end
     object DBGrid1: TDBGrid
-      Left = 11
+      Left = 8
       Top = 53
-      Width = 626
+      Width = 629
       Height = 316
       DataSource = dsSearch
-      TabOrder = 1
+      TabOrder = 0
       TitleFont.Charset = DEFAULT_CHARSET
       TitleFont.Color = clWindowText
       TitleFont.Height = -12
@@ -71,6 +57,41 @@ object frmSearchBase: TfrmSearchBase
       OnDblClick = DBGrid1DblClick
       OnKeyDown = DBGrid1KeyDown
     end
+    object Panel4: TPanel
+      Left = 8
+      Top = 9
+      Width = 545
+      Height = 41
+      BevelOuter = bvNone
+      Color = clWhite
+      ParentBackground = False
+      TabOrder = 1
+      object Shape1: TShape
+        Left = 0
+        Top = 0
+        Width = 4
+        Height = 41
+        Align = alLeft
+        Brush.Color = 10905621
+        Pen.Style = psClear
+      end
+      object Label1: TLabel
+        Left = 9
+        Top = 1
+        Width = 51
+        Height = 15
+        Caption = 'Descri'#231#227'o'
+      end
+      object edtSearch: TEdit
+        Left = 5
+        Top = 15
+        Width = 533
+        Height = 23
+        BorderStyle = bsNone
+        TabOrder = 0
+        OnKeyDown = edtSearchKeyDown
+      end
+    end
   end
   object Panel1: TPanel
     Left = 0
@@ -78,11 +99,10 @@ object frmSearchBase: TfrmSearchBase
     Width = 666
     Height = 29
     Align = alTop
-    Color = 7489294
+    Color = 13159893
     ParentBackground = False
     TabOrder = 1
     OnMouseDown = Panel1MouseDown
-    ExplicitTop = 4
     object btnClose: TSpeedButton
       Left = 635
       Top = 2
@@ -98,7 +118,7 @@ object frmSearchBase: TfrmSearchBase
       Height = 28
       Caption = 'Titulo'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
+      Font.Color = 5722185
       Font.Height = -20
       Font.Name = 'Segoe UI'
       Font.Style = []

@@ -23,6 +23,8 @@ type
     Label1: TLabel;
     lblTotalRegistro: TLabel;
     Label3: TLabel;
+    Panel4: TPanel;
+    Shape1: TShape;
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure DBGrid1DblClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
@@ -34,6 +36,7 @@ type
       Shift: TShiftState);
     procedure edtSearchKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure FormShow(Sender: TObject);
   private
     procedure SetResult;
     { Private declarations }
@@ -76,8 +79,11 @@ end;
 
 procedure TfrmSearchBase.SetResult;
 begin
-  returnId := memSearch.FieldByName('id').AsInteger;
-  ModalResult := mrOk;
+  if memSearch.FieldByName('id').AsInteger > 0 then
+  begin
+    returnId := memSearch.FieldByName('id').AsInteger;
+    ModalResult := mrOk;
+  end;
 end;
 
 procedure TfrmSearchBase.FormKeyDown(Sender: TObject; var Key: Word;
@@ -87,6 +93,11 @@ begin
     Close
   else if Key = VK_RETURN then
     Perform(WM_NextDlgCtl,0,0);
+end;
+
+procedure TfrmSearchBase.FormShow(Sender: TObject);
+begin
+  edtSearch.SetFocus;
 end;
 
 procedure TfrmSearchBase.Label3MouseDown(Sender: TObject; Button: TMouseButton;

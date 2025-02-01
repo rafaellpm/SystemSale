@@ -12,9 +12,9 @@ type TProductController = class(TProductModel)
   private
     fdConn : TFDConnection;
   public
-    procedure pCadastrar();
-    procedure pCarregar();
-    procedure pAtualizar();
+    procedure pCreate();
+    procedure pLoad();
+    procedure pUpdate();
 
     function fGetAll(): TFDQuery;
 
@@ -36,7 +36,7 @@ begin
   try
     qryCons := fCreateQuery(fdConn);
 
-    qryCons.SQL.Add('SELECT * FROM produtos ');
+    qryCons.SQL.Add('SELECT * FROM produtos');
 
     if Id > 0 then
     begin
@@ -61,7 +61,7 @@ begin
   end;
 end;
 
-procedure TProductController.pAtualizar;
+procedure TProductController.pUpdate;
 var qryExec : TFDQuery;
 begin
   try
@@ -95,7 +95,7 @@ begin
 
 end;
 
-procedure TProductController.pCadastrar;
+procedure TProductController.pCreate;
 var qryExec : TFDQuery;
 begin
   try
@@ -121,7 +121,7 @@ begin
   end;
 
   try
-    Id := fdConn.ExecSQL('SELECT LAST_INSERT_ID();');
+    Id := fdConn.ExecSQLScalar('SELECT LAST_INSERT_ID();');
 
     fdConn.Commit;
   except
@@ -139,7 +139,7 @@ begin
 
 end;
 
-procedure TProductController.pCarregar;
+procedure TProductController.pLoad;
 var qryCons : TFDQuery;
 begin
   try

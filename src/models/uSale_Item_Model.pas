@@ -10,6 +10,7 @@ type TSaleItemModel = class
     FIdVenda     : Integer;
     FVlrUnitario : Float64;
     FDescricaoProduto: string;
+    FDeleteProd: Boolean;
     procedure SetId(const Value: Integer);
     procedure SetIdProduto(const Value: Integer);
     procedure SetIdVenda(const Value: Integer);
@@ -17,6 +18,7 @@ type TSaleItemModel = class
     procedure SetVlrTotal(const Value: Float64);
     procedure SetVlrUnitario(const Value: Float64);
     procedure SetDescricaoProduto(const Value: string);
+    procedure SetDeleteProd(const Value: Boolean);
   public
     property Id               : Integer read FId               write SetId;
     property IdVenda          : Integer read FIdVenda          write SetIdVenda;
@@ -25,11 +27,17 @@ type TSaleItemModel = class
     property Qtde             : Float64 read FQtde             write SetQtde;
     property VlrUnitario      : Float64 read FVlrUnitario      write SetVlrUnitario;
     property VlrTotal         : Float64 read FVlrTotal         write SetVlrTotal;
+    property DeleteProd       : Boolean read FDeleteProd       write SetDeleteProd;
 end;
 
 implementation
 
 { TSaleItemModel }
+
+procedure TSaleItemModel.SetDeleteProd(const Value: Boolean);
+begin
+  FDeleteProd := Value;
+end;
 
 procedure TSaleItemModel.SetDescricaoProduto(const Value: string);
 begin

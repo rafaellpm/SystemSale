@@ -16,7 +16,9 @@ uses
   uSale_Item_Controller in 'src\controllers\uSale_Item_Controller.pas',
   uFrm_Search_Base in 'src\views\uFrm_Search_Base.pas' {frmSearchBase},
   uFrm_Search_Product in 'src\views\uFrm_Search_Product.pas' {frmSearchProduct},
-  uFrm_Search_Client in 'src\views\uFrm_Search_Client.pas' {frmSearchClient};
+  uFrm_Search_Client in 'src\views\uFrm_Search_Client.pas' {frmSearchClient},
+  uFrm_Search_View in 'src\views\uFrm_Search_View.pas' {frmSearchSale},
+  uFrm_Imput in 'src\views\uFrm_Imput.pas' {frmImputValue};
 
 {$R *.res}
 
@@ -25,6 +27,5 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(Tdm, dm);
   Application.CreateForm(TfrmSale, frmSale);
-  Application.CreateForm(TfrmSearchClient, frmSearchClient);
   Application.Run;
 end.

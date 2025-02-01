@@ -12,9 +12,10 @@ type TSaleItemController = class(TSaleItemModel)
   private
     fdConn : TFDConnection;
   public
-    procedure pCadastrar();
-    procedure pCarregar();
-    procedure pAtualizar();
+    procedure pCreate();
+    procedure pDelete();
+    procedure pLoad();
+    procedure pUpdate();
 
     function fGetAllSale(): TFDQuery;
 
@@ -36,7 +37,7 @@ begin
   try
     qryCons := fCreateQuery(fdConn);
 
-    qryCons.SQL.Add('SELECT * FROM venda_item ');
+    qryCons.SQL.Add('SELECT * FROM venda_item FORCE INDEX (idx_id_venda_item)');
     qryCons.SQL.Add('WHERE id_venda = :id_venda');
     qryCons.ParamByName('id_venda').AsInteger := IdVenda;
 
@@ -52,7 +53,7 @@ begin
   end;
 end;
 
-procedure TSaleItemController.pAtualizar;
+procedure TSaleItemController.pUpdate;
 var qryExec : TFDQuery;
 begin
   try
@@ -60,9 +61,9 @@ begin
     qryExec := fCreateQuery(fdConn);
 
     qryExec.SQL.Add('UPDATE venda_item SET ');
-    qryExec.SQL.Add('(id_venda, id_produto, descricao_produto, qtde, vlr_unitario, vlr_total)');
-    qryExec.SQL.Add('VALUES');
-    qryExec.SQL.Add('(:id_venda, :id_produto, :descricao_produto, :qtde, :vlr_unitario, :vlr_total)');
+    qryExec.SQL.Add('id_venda = :id_venda, id_produto = :id_produto,');
+    qryExec.SQL.Add('descricao_produto = :descricao_produto, qtde = :qtde,');
+    qryExec.SQL.Add('vlr_unitario = :vlr_unitario, vlr_total = :vlr_total');
     qryExec.SQL.Add('WHERE id = :id');
 
     qryExec.ParamByName('id').AsInteger               := Id;
@@ -91,7 +92,7 @@ begin
 
 end;
 
-procedure TSaleItemController.pCadastrar;
+procedure TSaleItemController.pCreate;
 var qryExec : TFDQuery;
 begin
   try
@@ -121,7 +122,7 @@ begin
   end;
 
   try
-    Id := fdConn.ExecSQL('SELECT LAST_INSERT_ID();');
+    Id := fdConn.ExecSQLScalar('SELECT LAST_INSERT_ID();');
 
     fdConn.Commit;
   except
@@ -135,10 +136,38 @@ begin
 
   if Assigned(qryExec) then
     FreeAndNil(qryExec);
-
 end;
 
-procedure TSaleItemController.pCarregar;
+procedure TSaleItemController.pDelete;
+var qryExec : TFDQuery;
+begin
+  try
+    fdConn.StartTransaction;
+
+    qryExec := fCreateQuery(fdConn);
+
+    qryExec.SQL.Add('DELETE FROM venda_item');
+    qryExec.SQL.Add('WHERE id = :id');
+    qryExec.ParamByName('id').AsInteger := Id;
+
+    qryExec.ExecSQL;
+
+    fdConn.Commit;
+
+  except
+    on e:exception do
+    begin
+      fdConn.Rollback;
+      pSaveLog(e.Message);
+      Raise Exception.Create('Erro ao Delete VendaItem: ' + Id.ToString());
+    end;
+  end;
+
+  if Assigned(qryExec) then
+    FreeAndNil(qryExec);
+end;
+
+procedure TSaleItemController.pLoad;
 var qryCons : TFDQuery;
 begin
   try
