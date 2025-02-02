@@ -410,9 +410,9 @@ begin
       memProducts.Edit;
     end;
 
-    memProductsQtde.AsFloat        := StrToCurr(edtQtdeProduct.Text);
-    memProductsVlrUnitario.AsFloat := StrToCurr(edtVlrUnitProduc.Text);
-    memProductsVlrTotal.AsFloat    := StrToCurr(edtVlrTotalProduct.Text);
+    memProductsQtde.AsFloat        := StrToFloat(StringReplace(edtQtdeProduct.Text, '.', '', [rfReplaceAll]));
+    memProductsVlrUnitario.AsFloat := StrToFloat(StringReplace(edtVlrUnitProduc.Text, '.', '', [rfReplaceAll]));
+    memProductsVlrTotal.AsFloat    := StrToFloat(StringReplace(edtVlrTotalProduct.Text, '.', '', [rfReplaceAll]));
 
     sale.Items[index].Qtde        := memProductsQtde.AsFloat;
     sale.Items[index].VlrUnitario := memProductsVlrUnitario.AsFloat;
