@@ -14,6 +14,7 @@ type TProductController = class(TProductModel)
   public
     procedure pCreate();
     procedure pLoad();
+    procedure pClear();
     procedure pUpdate();
 
     function fGetAll(): TFDQuery;
@@ -93,6 +94,13 @@ begin
   if Assigned(qryExec) then
     FreeAndNil(qryExec);
 
+end;
+
+procedure TProductController.pClear;
+begin
+  Id        := 0;
+  Descricao := '';
+  VlrVenda  := 0;
 end;
 
 procedure TProductController.pCreate;

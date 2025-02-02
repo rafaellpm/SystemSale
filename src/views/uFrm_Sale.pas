@@ -20,7 +20,7 @@ type
     Label11: TLabel;
     memProducts: TFDMemTable;
     dsProducts: TDataSource;
-    Label13: TLabel;
+    lblTotalProducts: TLabel;
     pnlCodProduct: TPanel;
     edtCodProduct: TEdit;
     Label5: TLabel;
@@ -128,6 +128,7 @@ type
     procedure pSearchSaleAll;
     procedure pImportSale;
     procedure pUpdateTotalSale;
+    procedure pClearView;
 
   public
     { Public declarations }
@@ -139,7 +140,7 @@ var
 implementation
 
 uses
-  uFrm_Search_View, uFrm_Imput;
+  uFrm_Search_Sale, uFrm_Imput;
 
 {$R *.dfm}
 
@@ -205,6 +206,13 @@ end;
 
 procedure TfrmSale.FormShow(Sender: TObject);
 begin
+  if not dm.fdConn.Connected then
+  begin
+    ShowMessage('Não Foi Possível conectar ao Banco de dados. Sistema Será Encerrado!');
+    Application.Terminate;
+    Exit;
+  end;
+
   pInitialize();
 end;
 
@@ -253,6 +261,7 @@ begin
       edtCodSale.Text := frmSearchSale.returnId.ToString;
       pImportSale();
     end;
+    edtCodClient.SetFocus;
     FreeAndNil(frmSearchSale);
   end;
 end;
@@ -281,10 +290,8 @@ begin
       edtCodSale.Enabled   := Sale.Id = 0;
       edtCodClient.Enabled := True;
       edtCodClient.Text    := Sale.IdCliente.ToString;
-      edtNameClient.Text   := Sale.NomeCliente;
+      edtNameClient.Text   := Sale.Client.Nome;
       lblDateSale.Caption  := FormatDateTime('dd/MM/yyyy hh:mm:ss', Sale.Data);
-
-      pUpdateTotalSale();
 
       memProducts.Close;
       memProducts.Open;
@@ -296,7 +303,7 @@ begin
         memProductsId.AsInteger              := Sale.Items[index].Id;
         memProductsIdVenda.AsInteger         := Sale.Items[index].IdVenda;
         memProductsIdProduto.AsInteger       := Sale.Items[index].IdProduto;
-        memProductsDescricaoProduto.AsString := Sale.Items[index].DescricaoProduto;
+        memProductsDescricaoProduto.AsString := Sale.Items[index].Product.Descricao;
         memProductsQtde.AsFloat              := Sale.Items[index].Qtde;
         memProductsVlrUnitario.AsFloat       := Sale.Items[index].VlrUnitario;
         memProductsVlrTotal.AsFloat          := Sale.Items[index].VlrTotal;
@@ -305,6 +312,14 @@ begin
         memProducts.Post;
       end;
       edtCodProduct.SetFocus;
+
+      pUpdateTotalSale();
+
+      btnSearchSale.Visible := false;
+      pnlCodSale.Enabled    := false;
+      btnCancelSale.Visible := False;
+      btnImport.Visible     := False;
+
     end
     else
       ShowMessage('Venda Já em Andamento!');
@@ -319,6 +334,17 @@ end;
 procedure TfrmSale.pUpdateTotalSale;
 begin
   lblTotalSale.Caption := FormatFloat('#,##0.00', Sale.fGetTotalSale);
+  lblTotalProducts.Caption := 'Quantidade de Itens: ' + memProducts.RecordCount.ToString;
+end;
+
+procedure TfrmSale.pClearView;
+begin
+  if (Sale.Id > 0) or not memProducts.IsEmpty or (edtCodClient.Text <> '') then
+  begin
+    if MessageDlg('Pedido em andamento! Pedido/Alterações serão perdidas. ' + ''#13'' + 'Deseja Continuar?', mtConfirmation, [mbYes, mbNo], 0, mbYes) <> mrYes then
+      Abort;
+  end;
+  pInitialize;
 end;
 
 procedure TfrmSale.pClearProdSelected;
@@ -377,8 +403,6 @@ begin
       memProductsDescricaoProduto.AsString := edtDescProduct.Text;
 
       sale.Items[index].IdProduto        := memProductsIdProduto.AsInteger;
-      sale.Items[index].DescricaoProduto := memProductsDescricaoProduto.AsString;
-
     end
     else
     begin
@@ -394,16 +418,15 @@ begin
     sale.Items[index].VlrUnitario := memProductsVlrUnitario.AsFloat;
     sale.Items[index].VlrTotal    := memProductsVlrTotal.AsFloat;
 
-    pUpdateTotalSale;
 
     memProductsIndex.AsInteger := index;
 
     memProducts.Post;
 
+    pUpdateTotalSale;
+
     edtCodProduct.Enabled := true;
     edtCodProduct.Tag     := 0;
-
-    //pClearProdSelected;
 
   except
     on e: exception do
@@ -474,7 +497,6 @@ begin
     begin
       edtNameClient.Text := client.Nome;
       Sale.IdCliente     := client.Id;
-      Sale.NomeCliente   := client.Nome;
 
       btnSearchSale.Visible := false;
       pnlCodSale.Enabled    := false;
@@ -500,6 +522,7 @@ begin
       edtCodClient.Text := frmSearchClient.returnId.ToString;
       pLoadClientSelected;
     end;
+    edtCodClient.SetFocus;
     FreeAndNil(frmSearchClient);
   end;
 end;
@@ -522,6 +545,7 @@ begin
       edtCodProduct.Text := frmSearchProduct.returnId.ToString;
       pLoadProductSelected;
     end;
+    edtCodProduct.SetFocus;
     FreeAndNil(frmSearchProduct);
   end;
 end;
@@ -529,11 +553,16 @@ end;
 procedure TfrmSale.btnSaveSaleClick(Sender: TObject);
 begin
   if Sale.Id > 0 then
-    Sale.pUpdate()
+  begin
+    Sale.pUpdate();
+    ShowMessage('Venda Atualizada! Nr: ' + Sale.Id.ToString);
+  end
   else
+  begin
     Sale.pCreate();
+    ShowMessage('Venda Realizada! Nr: ' + Sale.Id.ToString);
+  end;
 
-  ShowMessage('Venda Realizada! Nr: ' + Sale.Id.ToString);
   pInitialize;
 end;
 
@@ -547,23 +576,19 @@ begin
     begin
       Sale.Id := StrToIntDef(nrSale, 0);
       Sale.pDelete;
+      Sale.pClear;
     end;
   end;
 end;
 
 procedure TfrmSale.btnClearClick(Sender: TObject);
 begin
-  if Sale.Id > 0 then
-  begin
-    if MessageDlg('Pedido em andamento! Pedido/Alterações serão perdidas. ' + #13 + 'Deseja Continuar?', mtConfirmation, [mbYes, mbNo], 0, mbYes) <> mrYes then
-      Abort;
-  end;
-
-  pInitialize;
+  pClearView();
 end;
 
 procedure TfrmSale.btnExitClick(Sender: TObject);
 begin
+  pClearView();
   Close;
 end;
 

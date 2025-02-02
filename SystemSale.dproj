@@ -165,7 +165,7 @@
             <Form>frmSearchClient</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="src\views\uFrm_Search_View.pas">
+        <DCCReference Include="src\views\uFrm_Search_Sale.pas">
             <Form>frmSearchSale</Form>
             <FormType>dfm</FormType>
         </DCCReference>

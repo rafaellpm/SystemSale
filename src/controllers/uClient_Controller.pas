@@ -13,6 +13,7 @@ type TClientController = class(TClientModel)
   public
     procedure pCreate();
     procedure pLoad();
+    procedure pClear();
     procedure pUpdate();
 
     function fGetAll(): TFDQuery;
@@ -95,6 +96,14 @@ begin
   if Assigned(qryExec) then
     FreeAndNil(qryExec);
 
+end;
+
+procedure TClientController.pClear;
+begin
+  Id     := 0;
+  Nome   := '';
+  Cidade := '';
+  UF     := '';
 end;
 
 procedure TClientController.pCreate;

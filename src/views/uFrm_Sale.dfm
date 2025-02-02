@@ -184,9 +184,9 @@ object frmSale: TfrmSale
       Height = 15
       Caption = '='
     end
-    object Label13: TLabel
-      Left = 8
-      Top = 374
+    object lblTotalProducts: TLabel
+      Left = 3
+      Top = 380
       Width = 118
       Height = 15
       Caption = 'Quantidade de Itens: 0'

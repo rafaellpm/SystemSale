@@ -5,7 +5,7 @@ interface
 uses uSale_Model, FireDAC.Stan.Intf, FireDAC.Stan.Option, System.SysUtils, System.Generics.Collections,
   FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,  FireDAC.DApt,
   FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.VCLUI.Wait,
-  Data.DB, FireDAC.Comp.Client, uFunctions_DB, uFunctions, uSale_Item_Controller;
+  Data.DB, FireDAC.Comp.Client, uFunctions_DB, uFunctions, uSale_Item_Controller, uClient_Controller;
 
 type TSaleController = class(TSaleModel)
   private
@@ -14,6 +14,7 @@ type TSaleController = class(TSaleModel)
     procedure pSaveItems;
   public
     Items : TList<TSaleItemController>;
+    Client : TClientController;
 
     procedure pCreate();
     procedure pLoad();
@@ -23,7 +24,7 @@ type TSaleController = class(TSaleModel)
 
 
     function fGetTotalSale: Float64;
-    function fGetAll(): TFDQuery;
+    function fGetAll(nomeCliente: string= ''): TFDQuery;
     function pNewItem(): Integer;
 
     constructor Create(iFdConn:TFDConnection);
@@ -37,28 +38,30 @@ constructor TSaleController.Create(iFdConn: TFDConnection);
 begin
   fdConn := iFdConn;
   Items  := TList<TSaleItemController>.Create;
+  Client := TClientController.Create(iFdConn);
 end;
 
-function TSaleController.fGetAll(): TFDQuery;
+function TSaleController.fGetAll(nomeCliente: string = ''): TFDQuery;
 var qryCons : TFDQuery;
 begin
   try
     qryCons := fCreateQuery(fdConn);
 
-    qryCons.SQL.Add('SELECT * FROM venda  FORCE INDEX (idx_id_cliente) ');
-    qryCons.SQL.Add('WHERE (CAST(data AS DATE) BETWEEN :dataInicial AND :dataFinal)');
+    qryCons.SQL.Add('SELECT v.*, c.nome FROM venda AS v FORCE INDEX (idx_id_cliente) ');
+    qryCons.SQL.Add('INNER JOIN clientes AS c ON c.id = v.id_cliente ');
+    qryCons.SQL.Add('WHERE (CAST(v.data AS DATE) BETWEEN :dataInicial AND :dataFinal)');
     qryCons.ParamByName('dataInicial').AsDate := DateStart;
     qryCons.ParamByName('dataFinal').AsDate := DateEnd;
 
     if Id > 0 then
     begin
-      qryCons.SQL.Add('AND id = :id');
+      qryCons.SQL.Add('AND v.id = :id');
       qryCons.ParamByName('id').AsInteger := Id;
     end
     else
     begin
-      qryCons.SQL.Add('AND nome_cliente LIKE :nome_cliente');
-      qryCons.ParamByName('nome_cliente').AsString := '%' + nomeCliente + '%';
+      qryCons.SQL.Add('AND c.nome LIKE :nome');
+      qryCons.ParamByName('nome').AsString := '%' + nomeCliente + '%';
     end;
 
     qryCons.Open();
@@ -95,12 +98,11 @@ begin
     qryExec := fCreateQuery(fdConn);
 
     qryExec.SQL.Add('UPDATE venda SET ');
-    qryExec.SQL.Add('id_cliente = :id_cliente, nome_cliente = :nome_cliente, vlr_total = :vlr_total');
+    qryExec.SQL.Add('id_cliente = :id_cliente, vlr_total = :vlr_total');
     qryExec.SQL.Add('WHERE id = :id');
 
     qryExec.ParamByName('id').AsInteger          := Id;
     qryExec.ParamByName('id_cliente').AsInteger  := IdCliente;
-    qryExec.ParamByName('nome_cliente').AsString := NomeCliente;
     qryExec.ParamByName('vlr_total').AsFloat     := VlrTotal;
 
     qryExec.ExecSQL;
@@ -128,7 +130,6 @@ procedure TSaleController.pClear;
 begin
   Id          := 0;
   IdCliente   := 0;
-  NomeCliente := '';
   Data        := Now();
   VlrTotal    := 0;
 
@@ -143,12 +144,11 @@ begin
     qryExec := fCreateQuery(fdConn);
 
     qryExec.SQL.Add('INSERT INTO venda ');
-    qryExec.SQL.Add('(id_cliente, data, nome_cliente, vlr_total)');
+    qryExec.SQL.Add('(id_cliente, data, vlr_total)');
     qryExec.SQL.Add('VALUES');
-    qryExec.SQL.Add('(:id_cliente, :data, :nome_cliente, :vlr_total)');
+    qryExec.SQL.Add('(:id_cliente, :data, :vlr_total)');
 
     qryExec.ParamByName('id_cliente').AsInteger  := IdCliente;
-    qryExec.ParamByName('nome_cliente').AsString := NomeCliente;
     qryExec.ParamByName('data').AsDateTime       := Now();
     qryExec.ParamByName('vlr_total').AsFloat     := VlrTotal;
 
@@ -234,11 +234,13 @@ begin
 
     Id          := qryCons.FieldByName('id').AsInteger;
     IdCliente   := qryCons.FieldByName('id_cliente').AsInteger;
-    NomeCliente := qryCons.FieldByName('nome_cliente').AsString;
     Data        := qryCons.FieldByName('data').AsDateTime;
     VlrTotal    := qryCons.FieldByName('vlr_total').AsFloat;
 
     pLoadItems();
+
+    Client.Id := IdCliente;
+    Client.pLoad;
 
   except
     on e:exception do
@@ -273,13 +275,8 @@ begin
     begin
       index := pNewItem();
 
-      Items[index].Id               := qryCons.FieldByName('id').AsInteger;
-      Items[index].IdVenda          := qryCons.FieldByName('id_venda').AsInteger;
-      Items[index].IdProduto        := qryCons.FieldByName('id_produto').AsInteger;
-      Items[index].DescricaoProduto := qryCons.FieldByName('descricao_produto').AsString;
-      Items[index].Qtde             := qryCons.FieldByName('qtde').AsFloat;
-      Items[index].VlrUnitario      := qryCons.FieldByName('vlr_unitario').AsFloat;
-      Items[index].VlrTotal         := qryCons.FieldByName('vlr_total').AsFloat;
+      Items[index].Id := qryCons.FieldByName('id').AsInteger;
+      Items[index].pLoad;
 
       total := total + Items[index].VlrTotal;
 
