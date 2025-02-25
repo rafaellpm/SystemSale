@@ -32,7 +32,7 @@ inherited frmSearchClient: TfrmSearchClient
         end
         item
           Expanded = False
-          FieldName = 'UF'
+          FieldName = 'uf'
           Title.Alignment = taCenter
           Width = 60
           Visible = True
@@ -49,20 +49,30 @@ inherited frmSearchClient: TfrmSearchClient
     end
   end
   inherited memSearch: TFDMemTable
-    object memSearchId: TIntegerField
+    object memSearchid: TFDAutoIncField
       FieldName = 'id'
+      Origin = 'id'
+      ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
     end
-    object memSearchNome: TWideStringField
+    object memSearchnome: TStringField
       FieldName = 'nome'
+      Origin = 'nome'
+      Required = True
       Size = 255
     end
-    object memSearchCidade: TWideStringField
+    object memSearchcidade: TStringField
+      AutoGenerateValue = arDefault
       FieldName = 'cidade'
-      Size = 255
+      Origin = 'cidade'
+      Size = 100
     end
-    object memSearchUF: TWideStringField
-      FieldName = 'UF'
-      Size = 255
+    object memSearchuf: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'uf'
+      Origin = 'uf'
+      FixedChar = True
+      Size = 2
     end
   end
 end

@@ -1,5 +1,5 @@
 inherited frmSearchProduct: TfrmSearchProduct
-  Caption = ''
+  Caption = 'tfdq'
   TextHeight = 15
   inherited GroupBox1: TGroupBox
     inherited btnSearch: TSpeedButton
@@ -13,13 +13,13 @@ inherited frmSearchProduct: TfrmSearchProduct
       Columns = <
         item
           Expanded = False
-          FieldName = 'Id'
+          FieldName = 'id'
           Title.Alignment = taCenter
           Visible = True
         end
         item
           Expanded = False
-          FieldName = 'Descricao'
+          FieldName = 'descricao'
           Title.Alignment = taCenter
           Title.Caption = 'Descri'#231#227'o'
           Width = 420
@@ -47,16 +47,23 @@ inherited frmSearchProduct: TfrmSearchProduct
     end
   end
   inherited memSearch: TFDMemTable
-    object memSearchId: TIntegerField
-      FieldName = 'Id'
+    object memSearchid: TFDAutoIncField
+      FieldName = 'id'
+      Origin = 'id'
+      ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
     end
-    object memSearchDescricao: TWideStringField
-      FieldName = 'Descricao'
+    object memSearchdescricao: TStringField
+      FieldName = 'descricao'
+      Origin = 'descricao'
+      Required = True
       Size = 255
     end
-    object memSearchVlrVenda: TBCDField
+    object memSearchvlr_venda: TBCDField
       FieldName = 'vlr_venda'
-      DisplayFormat = '#,##0.00'
+      Origin = 'vlr_venda'
+      Required = True
+      Precision = 10
       Size = 2
     end
   end

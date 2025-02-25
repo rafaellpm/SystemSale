@@ -120,10 +120,8 @@ begin
     end;
   end;
 
-
   if Assigned(qryExec) then
     FreeAndNil(qryExec);
-
 end;
 
 procedure TSaleController.pClear;
@@ -154,16 +152,6 @@ begin
 
     qryExec.ExecSQL;
 
-  except
-    on e:exception do
-    begin
-      fdConn.Rollback;
-      pSaveLog(e.Message);
-      Raise Exception.Create('Erro ao Cadastrar Venda');
-    end;
-  end;
-
-  try
     Id := fdConn.ExecSQLScalar('SELECT LAST_INSERT_ID();');
 
     pSaveItems();
@@ -175,7 +163,7 @@ begin
     begin
       fdConn.Rollback;
       pSaveLog(e.Message);
-      Raise Exception.Create('Erro ao Capturar ID do Venda');
+      Raise Exception.Create('Erro ao Gravar Venda');
     end;
   end;
 
@@ -206,7 +194,6 @@ begin
     qryExec.ExecSQL;
 
     fdConn.Commit;
-
   except
     on e:exception do
     begin
@@ -306,7 +293,6 @@ begin
   begin
     if Items[i].IdVenda = 0 then
         Items[i].idVenda := Id;
-
 
     if (Items[i].Id = 0) and (not Items[i].DeleteProd) then
       Items[i].pCreate

@@ -35,7 +35,7 @@ var ini : TIniFile;
     Database, Username, Server, Port, Password, Dll: string;
     dir : string;
 begin
-  dir := fGetCurrentDir();
+   dir := fGetCurrentDir();
   if not FileExists(dir + 'system.ini') then
     pCriarIniLocal;
 

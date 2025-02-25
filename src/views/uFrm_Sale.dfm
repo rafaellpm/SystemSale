@@ -549,7 +549,7 @@ object frmSale: TfrmSale
       object Label9: TLabel
         Left = 6
         Top = 1
-        Width = 45
+        Width = 44
         Height = 13
         Caption = 'Vlr. Total'
         Font.Charset = DEFAULT_CHARSET
@@ -598,7 +598,7 @@ object frmSale: TfrmSale
       object Label14: TLabel
         Left = 6
         Top = 1
-        Width = 60
+        Width = 59
         Height = 13
         Caption = 'Total Venda'
         Font.Charset = DEFAULT_CHARSET

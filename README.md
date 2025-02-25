@@ -5,7 +5,7 @@
 ###### Tecnologias Utilizadas #######
 
    - Linguagem: Delphi
-   - Banco de Dados: MySQL
+   - Banco de Dados: MySQL 8.0
    - Framework de Acesso: FireDAC
    - Versionamento: Git
    - Componentes: Nativo

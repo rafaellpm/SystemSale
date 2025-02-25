@@ -8,13 +8,14 @@ uses
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.ExtCtrls, Vcl.Grids, uFunctions,
-  Vcl.DBGrids, Vcl.StdCtrls, Vcl.Buttons, uProduct_Controller, daoConnection;
+  Vcl.DBGrids, Vcl.StdCtrls, Vcl.Buttons, uProduct_Controller, daoConnection,
+  FireDAC.Stan.Async, FireDAC.DApt;
 
 type
   TfrmSearchProduct = class(TfrmSearchBase)
-    memSearchId: TIntegerField;
-    memSearchDescricao: TWideStringField;
-    memSearchVlrVenda: TBCDField;
+    memSearchid: TFDAutoIncField;
+    memSearchdescricao: TStringField;
+    memSearchvlr_venda: TBCDField;
     procedure btnSearchClick(Sender: TObject);
   private
     { Private declarations }

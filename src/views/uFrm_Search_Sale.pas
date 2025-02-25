@@ -8,7 +8,8 @@ uses
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.ExtCtrls, Vcl.Grids,
-  Vcl.DBGrids, Vcl.StdCtrls, Vcl.Buttons, Vcl.ComCtrls;
+  Vcl.DBGrids, Vcl.StdCtrls, Vcl.Buttons, Vcl.ComCtrls, FireDAC.Stan.Async,
+  FireDAC.DApt;
 
 type
   TfrmSearchSale = class(TfrmSearchBase)
@@ -20,11 +21,11 @@ type
     Shape3: TShape;
     Label4: TLabel;
     dtEnd: TDateTimePicker;
-    memSearchid: TIntegerField;
-    memSearchnome_cliente: TWideStringField;
+    memSearchid: TFDAutoIncField;
     memSearchid_cliente: TIntegerField;
-    memSearchvlr_total: TBCDField;
     memSearchdata: TSQLTimeStampField;
+    memSearchvlr_total: TBCDField;
+    memSearchnome: TStringField;
     procedure btnSearchClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private

@@ -62,7 +62,6 @@ procedure TSaleItemController.pUpdate;
 var qryExec : TFDQuery;
 begin
   try
-    fdConn.StartTransaction;
     qryExec := fCreateQuery(fdConn);
 
     qryExec.SQL.Add('UPDATE venda_item SET ');
@@ -79,12 +78,9 @@ begin
 
     qryExec.ExecSQL;
 
-    fdConn.Commit;
-
   except
     on e:exception do
     begin
-      fdConn.Rollback;
       pSaveLog(e.Message);
       Raise Exception.Create('Erro ao Atualizar VendaItem: ' + Id.ToString());
     end;
@@ -111,7 +107,6 @@ procedure TSaleItemController.pCreate;
 var qryExec : TFDQuery;
 begin
   try
-    fdConn.StartTransaction;
     qryExec := fCreateQuery(fdConn);
 
     qryExec.SQL.Add('INSERT INTO venda_item ');
@@ -126,25 +121,15 @@ begin
     qryExec.ParamByName('vlr_total').AsFloat    := VlrTotal;
 
     qryExec.ExecSQL;
-  except
-    on e:exception do
-    begin
-      fdConn.Rollback;
-      pSaveLog(e.Message);
-      Raise Exception.Create('Erro ao Cadastrar venda_item');
-    end;
-  end;
 
-  try
     Id := fdConn.ExecSQLScalar('SELECT LAST_INSERT_ID();');
 
-    fdConn.Commit;
   except
     on e:exception do
     begin
       fdConn.Rollback;
       pSaveLog(e.Message);
-      Raise Exception.Create('Erro ao Capturar ID do venda_item');
+      Raise Exception.Create('Erro ao Gravar venda_item');
     end;
   end;
 
@@ -156,7 +141,6 @@ procedure TSaleItemController.pDelete;
 var qryExec : TFDQuery;
 begin
   try
-    fdConn.StartTransaction;
 
     qryExec := fCreateQuery(fdConn);
 
@@ -165,8 +149,6 @@ begin
     qryExec.ParamByName('id').AsInteger := Id;
 
     qryExec.ExecSQL;
-
-    fdConn.Commit;
 
   except
     on e:exception do

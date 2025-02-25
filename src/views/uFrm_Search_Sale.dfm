@@ -141,22 +141,36 @@ inherited frmSearchSale: TfrmSearchSale
     end
   end
   inherited memSearch: TFDMemTable
-    object memSearchid: TIntegerField
+    object memSearchid: TFDAutoIncField
       FieldName = 'id'
-    end
-    object memSearchnome_cliente: TWideStringField
-      FieldName = 'nome'
-      Size = 255
+      Origin = 'id'
+      ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
     end
     object memSearchid_cliente: TIntegerField
+      AutoGenerateValue = arDefault
       FieldName = 'id_cliente'
+      Origin = 'id_cliente'
+    end
+    object memSearchdata: TSQLTimeStampField
+      AutoGenerateValue = arDefault
+      FieldName = 'data'
+      Origin = '`data`'
     end
     object memSearchvlr_total: TBCDField
       FieldName = 'vlr_total'
+      Origin = 'vlr_total'
+      Required = True
+      Precision = 10
       Size = 2
     end
-    object memSearchdata: TSQLTimeStampField
-      FieldName = 'data'
+    object memSearchnome: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'nome'
+      Origin = 'nome'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 255
     end
   end
 end
